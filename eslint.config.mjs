@@ -45,6 +45,10 @@ export default tseslint.config(
       eqeqeq: ['error', 'always'],
       // Always use braces to prevent scope bugs
       curly: ['error', 'all'],
+      // Use function declarations, not arrow functions for named functions
+      'func-style': ['error', 'declaration'],
+      // Use arrow functions only for callbacks
+      'prefer-arrow-callback': 'error',
     },
   },
 
