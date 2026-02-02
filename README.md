@@ -1,3 +1,25 @@
+## API Documentation
+
+Interactive API docs powered by Swagger UI.
+
+**Access:** http://localhost:3000/docs
+
+**Add new endpoints:** Edit `src/docs/openapi.ts`
+
+```ts
+'/api/v1/users': {
+  get: {
+    summary: 'Get all users',
+    tags: ['Users'],
+    responses: {
+      '200': { description: 'Success' }
+    }
+  }
+}
+```
+
+---
+
 ## Code Quality
 
 ### ESLint & Prettier
