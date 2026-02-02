@@ -38,7 +38,9 @@ export const openApiSpec: OpenAPIV3.Document = {
                     },
                     items: {
                       type: 'array',
-                      items: { type: 'string' },
+                      items: {
+                        type: 'string',
+                      },
                       example: ['item1', 'item2', 'item3'],
                     },
                   },
