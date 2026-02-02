@@ -100,3 +100,54 @@ chore(deps): upgrade express to v5
 - No period at end
 - Keep under 72 characters
 - Use imperative mood ("add" not "added")
+
+---
+
+## Git Branches
+
+### Branch Naming
+
+Format: `type/short-description`
+
+| Prefix | Purpose |
+|--------|---------|
+| `main` | Production-ready code |
+| `develop` | Integration branch |
+| `feature/` | New features |
+| `fix/` | Bug fixes |
+| `hotfix/` | Urgent production fixes |
+| `release/` | Release preparation |
+
+### Examples
+
+```bash
+feature/user-authentication
+feature/add-payment-api
+fix/login-validation-error
+hotfix/security-patch
+release/v1.2.0
+```
+
+### Workflow
+
+```bash
+# Create feature branch
+git checkout -b feature/add-login develop
+
+# Work on feature...
+git add .
+git commit -m "feat(auth): add login endpoint"
+
+# Push and create PR
+git push -u origin feature/add-login
+
+# After PR merged, delete branch
+git branch -d feature/add-login
+```
+
+### Rules
+
+- Branch from `develop` for features/fixes
+- Branch from `main` for hotfixes
+- Keep branch names short and descriptive
+- Delete branches after merging
