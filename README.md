@@ -67,3 +67,36 @@ Add to `.vscode/settings.json`:
   }
 }
 ```
+
+---
+
+## Conventional Commits
+
+Format: `type(scope): description`
+
+| Type | When to Use |
+|------|-------------|
+| `feat` | New feature |
+| `fix` | Bug fix |
+| `docs` | Documentation only |
+| `style` | Formatting, no code change |
+| `refactor` | Code restructure, no behavior change |
+| `test` | Adding/updating tests |
+| `chore` | Build, config, dependencies |
+
+### Examples
+
+```bash
+feat(auth): add login endpoint
+fix(api): handle null response
+docs(readme): update setup instructions
+refactor(users): extract validation logic
+chore(deps): upgrade express to v5
+```
+
+### Rules
+
+- Use lowercase
+- No period at end
+- Keep under 72 characters
+- Use imperative mood ("add" not "added")
