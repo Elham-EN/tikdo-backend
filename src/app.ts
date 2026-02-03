@@ -9,6 +9,7 @@ import express, { type Application, type Request, type Response } from 'express'
 import swaggerUi from 'swagger-ui-express';
 import morgan from 'morgan';
 import { openApiSpec } from './docs/openapi.js';
+import { timestampMelbourne } from './shared/utils/dateHelper.js';
 
 // Express Application
 const app: Application = express();
@@ -19,20 +20,7 @@ const port: number = 3000;
 app.use(express.json());
 
 // Request logging - shows: timestamp, method, url, status, response time, size
-morgan.token('timestamp', () => {
-  const now = new Date();
-  const options: Intl.DateTimeFormatOptions = {
-    timeZone: 'Australia/Melbourne',
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  };
-  const formatted = now.toLocaleString('en-AU', options).replace(',', '').toUpperCase();
-  return formatted;
-});
+morgan.token('timestamp', () => timestampMelbourne());
 app.use(morgan(':timestamp :method :url :status :response-time ms - :res[content-length]'));
 
 // API Documentation
@@ -42,7 +30,7 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(openApiSpec));
 app.get('/api/v1/data', (req: Request, res: Response) => {
   const data = {
     message: 'Hello from the API!',
-    timestamp: new Date().toISOString(),
+    timestamp: timestampMelbourne(),
     items: ['item1', 'item2', 'item3'],
   };
   res.json(data);

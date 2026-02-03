@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+
+# Git
+.git/
+.gitignore
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# Test
+coverage/
+
+# Docker
+docker/
+Dockerfile*
+docker-compose*
+
+# Docs
+*.md
+
+# Dev config
+prettier.config.*
+eslint.config.*
