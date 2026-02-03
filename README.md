@@ -70,6 +70,75 @@ Add to `.vscode/settings.json`:
 
 ---
 
+## Testing
+
+### Overview
+
+Testing is powered by **Jest** with **TypeScript** support via `ts-jest`.
+
+| Test Type | Location | Purpose |
+|-----------|----------|---------|
+| **Unit** | `tests/unit/` | Test individual functions/modules in isolation |
+| **Integration** | `tests/integration/` | Test multiple components working together |
+
+### Commands
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode (re-runs on file changes)
+npm run test:watch
+
+# Run tests with coverage report
+npm run test:coverage
+
+# Run only unit tests
+npm run test:unit
+
+# Run only integration tests
+npm run test:integration
+```
+
+### Writing Tests
+
+Create test files with `.test.ts` extension:
+
+```ts
+import { describe, it, expect } from '@jest/globals';
+
+describe('MyFunction', () => {
+  it('should return expected result', () => {
+    const result = myFunction('input');
+    expect(result).toBe('expected output');
+  });
+
+  it('should handle async operations', async () => {
+    const result = await asyncFunction();
+    expect(result).toBeDefined();
+  });
+});
+```
+
+### File Structure
+
+```
+tests/
+├── unit/           # Unit tests
+│   └── *.test.ts
+└── integration/    # Integration tests
+    └── *.test.ts
+```
+
+### Coverage
+
+After running `npm run test:coverage`, view the report:
+- **Terminal**: Summary displayed after tests
+- **HTML**: Open `coverage/index.html` in browser
+- **CI/CD**: Use `coverage/lcov.info` for coverage tools
+
+---
+
 ## Conventional Commits
 
 Format: `type(scope): description`
