@@ -24,10 +24,10 @@ Interactive API docs powered by Swagger UI.
 
 ### ESLint & Prettier
 
-| Tool | Purpose |
-|------|---------|
-| **ESLint** | Catches bugs, enforces best practices, prevents bad patterns |
-| **Prettier** | Auto-formats code for consistent style |
+| Tool         | Purpose                                                      |
+| ------------ | ------------------------------------------------------------ |
+| **ESLint**   | Catches bugs, enforces best practices, prevents bad patterns |
+| **Prettier** | Auto-formats code for consistent style                       |
 
 ### Commands
 
@@ -54,10 +54,12 @@ npm run format:check
 ### IDE Setup (VSCode)
 
 Install extensions:
+
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
 Add to `.vscode/settings.json`:
+
 ```json
 {
   "editor.formatOnSave": true,
@@ -76,10 +78,10 @@ Add to `.vscode/settings.json`:
 
 Testing is powered by **Jest** with **TypeScript** support via `ts-jest`.
 
-| Test Type | Location | Purpose |
-|-----------|----------|---------|
-| **Unit** | `tests/unit/` | Test individual functions/modules in isolation |
-| **Integration** | `tests/integration/` | Test multiple components working together |
+| Test Type       | Location             | Purpose                                        |
+| --------------- | -------------------- | ---------------------------------------------- |
+| **Unit**        | `tests/unit/`        | Test individual functions/modules in isolation |
+| **Integration** | `tests/integration/` | Test multiple components working together      |
 
 ### Commands
 
@@ -133,9 +135,54 @@ tests/
 ### Coverage
 
 After running `npm run test:coverage`, view the report:
+
 - **Terminal**: Summary displayed after tests
 - **HTML**: Open `coverage/index.html` in browser
 - **CI/CD**: Use `coverage/lcov.info` for coverage tools
+
+---
+
+## CI/CD (GitHub Actions)
+
+### Overview
+
+Automated checks run on every push and pull request to `main` and `develop` branches.
+
+### What Gets Checked
+
+| Step | What it does |
+|------|--------------|
+| **Lint** | Runs ESLint to catch code issues |
+| **Format** | Checks Prettier formatting |
+| **Type check** | Validates TypeScript types |
+| **Test** | Runs all Jest tests |
+
+### Setup Instructions
+
+1. **File location**: `.github/workflows/ci.yml` (already created)
+
+2. **Push to GitHub**:
+   ```bash
+   git add .github/workflows/ci.yml
+   git commit -m "chore(ci): add GitHub Actions workflow"
+   git push
+   ```
+
+3. **View results**: Go to your GitHub repo → **Actions** tab
+
+4. **(Optional) Enable branch protection**:
+   - Go to repo **Settings** → **Branches**
+   - Click **Add rule** for `main`
+   - Enable **Require status checks to pass before merging**
+   - Select `build-and-test` from the list
+
+### Status Badge
+
+Add to the top of your README:
+
+```md
+![CI](https://github.com/YOUR_USERNAME/YOUR_REPO/actions/workflows/ci.yml/badge.svg)
+```
 
 ---
 
@@ -143,15 +190,15 @@ After running `npm run test:coverage`, view the report:
 
 Format: `type(scope): description`
 
-| Type | When to Use |
-|------|-------------|
-| `feat` | New feature |
-| `fix` | Bug fix |
-| `docs` | Documentation only |
-| `style` | Formatting, no code change |
+| Type       | When to Use                          |
+| ---------- | ------------------------------------ |
+| `feat`     | New feature                          |
+| `fix`      | Bug fix                              |
+| `docs`     | Documentation only                   |
+| `style`    | Formatting, no code change           |
 | `refactor` | Code restructure, no behavior change |
-| `test` | Adding/updating tests |
-| `chore` | Build, config, dependencies |
+| `test`     | Adding/updating tests                |
+| `chore`    | Build, config, dependencies          |
 
 ### Examples
 
@@ -178,14 +225,14 @@ chore(deps): upgrade express to v5
 
 Format: `type/short-description`
 
-| Prefix | Purpose |
-|--------|---------|
-| `main` | Production-ready code |
-| `develop` | Integration branch |
-| `feature/` | New features |
-| `fix/` | Bug fixes |
-| `hotfix/` | Urgent production fixes |
-| `release/` | Release preparation |
+| Prefix     | Purpose                 |
+| ---------- | ----------------------- |
+| `main`     | Production-ready code   |
+| `develop`  | Integration branch      |
+| `feature/` | New features            |
+| `fix/`     | Bug fixes               |
+| `hotfix/`  | Urgent production fixes |
+| `release/` | Release preparation     |
 
 ### Examples
 
@@ -209,6 +256,12 @@ git commit -m "feat(auth): add login endpoint"
 
 # Push and create PR
 git push -u origin feature/add-login
+
+# Go back to main branch
+git checkout main
+
+# Get update remote repo
+git pull
 
 # After PR merged, delete branch
 git branch -d feature/add-login
