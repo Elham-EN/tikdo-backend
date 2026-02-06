@@ -5,6 +5,10 @@
  * Port Config, Starting Listener, and Env Specific
  */
 
+// Load environment variables FIRST before anything else
+import dotenv from 'dotenv';
+dotenv.config({ path: `.env.${process.env['NODE_ENV'] || 'development'}` });
+
 import http from 'http';
 import { app, port } from './app.js';
 
