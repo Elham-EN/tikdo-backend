@@ -11,6 +11,7 @@ if (!connectionString) {
 }
 
 const adapter = new PrismaPg({ connectionString });
+// Client user
 const prisma = new PrismaClient({ adapter });
 
 export { prisma };
