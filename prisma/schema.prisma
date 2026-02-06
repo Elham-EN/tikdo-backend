@@ -1,10 +1,62 @@
-// This is your Prisma schema file,
+// Prisma schema file: define application models
 
+// Generate Prisma Client
+// Provide the foundation for the queries in the Prisma Client API
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
 }
-
+// Specifies your database connection
 datasource db {
   provider = "postgresql"
+}
+
+// Enums
+enum ListType {
+  inbox
+  today
+  upcoming
+  anytime
+  someday
+}
+
+enum TaskStatus {
+  pending
+  completed
+  deleted
+}
+
+model Task {
+  id Int @id @default(autoincrement())
+
+  // Task content
+  title String 
+  notes String?
+
+  // Organization
+  listType ListType @default(inbox)
+  status TaskStatus @default(pending)
+
+  // Scheduling
+  scheduledDate DateTime? @db.Date
+  scheduledTime DateTime? @db.Time()
+
+  // Overdue tracking
+  isOverdue Boolean @default(false)
+  originalScheduledDate DateTime? @db.Date
+  originalScheduledTime DateTime? @db.Time
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  completedAt DateTime?
+
+  // Ordering
+  position Int @default(0)
+
+  // These are database indexes - they make your queries faster.
+  @@index([listType])
+  @@index([status])
+  @@index([scheduledDate])
+  @@index([listType,status])
 }
