@@ -27,16 +27,6 @@ app.use(morgan(':timestamp :method :url :status :response-time ms - :res[content
 // API Documentation
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(openApiSpec));
 
-// Define a route handler for test
-app.get('/api/v1/data', (req: Request, res: Response) => {
-  const data = {
-    message: 'Hello from the API!',
-    timestamp: timestampMelbourne(),
-    items: ['item1', 'item2', 'item3'],
-  };
-  res.json(data);
-});
-
 // Create a new task
 app.post('/api/v1/tasks', async (req: Request, res: Response) => {
   try {

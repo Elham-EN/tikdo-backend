@@ -1,5 +1,4 @@
 import type { OpenAPIV3 } from 'openapi-types';
-import { dataPaths } from './paths/data.paths.js';
 import { tasksPaths } from './paths/tasks.paths.js';
 
 /**
@@ -25,7 +24,6 @@ export const openApiSpec: OpenAPIV3.Document = {
     },
   ],
   paths: {
-    ...dataPaths,
     ...tasksPaths,
   },
 };
