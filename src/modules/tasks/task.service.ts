@@ -29,11 +29,6 @@ async function createTask(createTaskInput: CreateTaskInput) {
       ...(createTaskInput.listType !== undefined && { listType: createTaskInput.listType }),
     },
   });
-
-  if (!task) {
-    throw new Error(`Task creation failed`);
-  }
-
   return task;
 }
 

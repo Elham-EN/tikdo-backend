@@ -5,7 +5,7 @@
  * Setup Global Milddwars, Routing, App Instance Export
  */
 
-import express, { type Application, type Request, type Response } from 'express';
+import express, { type Application } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import morgan from 'morgan';
 import TaskRouter from './modules/tasks/task.routes';
