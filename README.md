@@ -17,19 +17,135 @@ Interactive API docs powered by Swagger UI.
 
 **Access:** http://localhost:3000/docs
 
-**Add new endpoints:** Edit `src/docs/openapi.ts`
+### Documentation Structure
+
+The OpenAPI documentation is organized in a modular structure:
+
+```
+src/docs/
+├── openapi.ts              # Main file (merges all paths)
+├── schemas/                # Reusable schemas
+│   ├── common.schema.ts    # Common responses (errors, etc.)
+│   └── task.schema.ts      # Task-related schemas
+└── paths/                  # Endpoint definitions
+    ├── data.paths.ts       # /api/v1/data endpoints
+    └── tasks.paths.ts      # /api/v1/tasks endpoints
+```
+
+### Adding New Endpoints
+
+**Step 1: Define schemas** (if needed)
+
+Create or update schema files in `src/docs/schemas/`:
 
 ```ts
-'/api/v1/users': {
-  get: {
-    summary: 'Get all users',
-    tags: ['Users'],
-    responses: {
-      '200': { description: 'Success' }
+// src/docs/schemas/user.schema.ts
+import type { OpenAPIV3 } from 'openapi-types';
+
+export const userSchema: OpenAPIV3.SchemaObject = {
+  type: 'object',
+  properties: {
+    id: { type: 'integer', example: 1 },
+    name: { type: 'string', example: 'John Doe' },
+    email: { type: 'string', example: 'john@example.com' }
+  }
+};
+
+export const createUserSchema: OpenAPIV3.SchemaObject = {
+  type: 'object',
+  required: ['name', 'email'],
+  properties: {
+    name: { type: 'string', example: 'John Doe' },
+    email: { type: 'string', example: 'john@example.com' }
+  }
+};
+```
+
+**Step 2: Create path definitions**
+
+Create a new file in `src/docs/paths/`:
+
+```ts
+// src/docs/paths/users.paths.ts
+import type { OpenAPIV3 } from 'openapi-types';
+import { userSchema, createUserSchema } from '../schemas/user.schema.js';
+import { commonResponses } from '../schemas/common.schema.js';
+
+export const usersPaths: OpenAPIV3.PathsObject = {
+  '/api/v1/users': {
+    get: {
+      summary: 'List all users',
+      tags: ['Users'],
+      responses: {
+        '200': {
+          description: 'Success',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'array',
+                items: userSchema
+              }
+            }
+          }
+        },
+        '500': commonResponses[500]
+      }
+    },
+    post: {
+      summary: 'Create a new user',
+      tags: ['Users'],
+      requestBody: {
+        required: true,
+        content: {
+          'application/json': {
+            schema: createUserSchema
+          }
+        }
+      },
+      responses: {
+        '201': {
+          description: 'User created',
+          content: {
+            'application/json': {
+              schema: userSchema
+            }
+          }
+        },
+        '400': commonResponses[400],
+        '500': commonResponses[500]
+      }
     }
   }
-}
+};
 ```
+
+**Step 3: Import and merge paths**
+
+Update `src/docs/openapi.ts`:
+
+```ts
+import { usersPaths } from './paths/users.paths.js';
+
+export const openApiSpec: OpenAPIV3.Document = {
+  // ... existing config
+  paths: {
+    ...dataPaths,
+    ...tasksPaths,
+    ...usersPaths  // Add your new paths
+  }
+};
+```
+
+**Step 4: View updated docs**
+
+Start the server and visit http://localhost:3000/docs to see your new endpoints.
+
+### Benefits
+
+- **Organized**: Each resource in its own file
+- **Reusable**: Define schemas once, use everywhere
+- **Scalable**: Easy to add endpoints without cluttering
+- **Type-safe**: Full TypeScript support
 
 ---
 
