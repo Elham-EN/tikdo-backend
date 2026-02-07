@@ -1,5 +1,6 @@
 // Instantiate Prisma Client
-import 'dotenv/config';
+import dotenv from 'dotenv';
+dotenv.config({ path: `.env.${process.env['NODE_ENV'] || 'development'}` });
 
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../../../generated/prisma/client';
