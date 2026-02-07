@@ -28,6 +28,8 @@ jobs:
 
       # Step 4: Generate Prisma Client
       - name: Generate Prisma Client
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/tikdo_ci
         run: npm run db:generate
 
       # Step 5: Run ESLint
