@@ -205,12 +205,12 @@ Add to `.vscode/settings.json`:
 
 ### Overview
 
-Testing is powered by **Jest** with **TypeScript** support via `ts-jest`.
+Testing is powered by **Jest** with **TypeScript** support via `ts-jest`. Tests follow the **Arrange, Act, Assert (AAA)** pattern.
 
-| Test Type       | Location             | Purpose                                        |
-| --------------- | -------------------- | ---------------------------------------------- |
+| Test Type       | Location             | Purpose                                       |
+| --------------- | -------------------- | --------------------------------------------- |
 | **Unit**        | `tests/unit/`        | Test individual functions/modules in isolation |
-| **Integration** | `tests/integration/` | Test multiple components working together      |
+| **Integration** | `tests/integration/` | Test multiple components working together     |
 
 ### Commands
 
@@ -231,34 +231,79 @@ npm run test:unit
 npm run test:integration
 ```
 
+### File Structure
+
+Mirror the `src/` structure inside `tests/`:
+
+```
+tests/
+├── unit/
+│   └── shared/utils/
+│       └── dateHelper.test.ts    # Tests for src/shared/utils/dateHelper.ts
+└── integration/
+    └── *.test.ts
+```
+
+### When to Write Tests
+
+Focus on tests that have **high impact on behavior**. Don't write tests for everything — write them where they matter.
+
+**Write unit tests when you add:**
+
+| Scenario                   | Example                                              |
+| -------------------------- | ---------------------------------------------------- |
+| **Input validation logic** | Validating task title is not empty, date format, etc. |
+| **Data transformation**    | Converting dates, formatting responses, mapping data |
+| **Business rules**         | Overdue detection, task status transitions            |
+| **Utility functions**      | Helpers with logic that could break                   |
+
+**Write integration tests when you add:**
+
+| Scenario                    | Example                                               |
+| --------------------------- | ----------------------------------------------------- |
+| **API endpoints**           | POST /tasks returns 201 with valid data, 400 without  |
+| **Database operations**     | Task CRUD operations persist and retrieve correctly    |
+| **Multi-step workflows**    | Creating a task then moving it between lists           |
+
+**Skip tests for:**
+
+- Config/setup files (`prisma.ts`, `server.ts`)
+- Static definitions (OpenAPI schemas, types)
+- Simple pass-through code with no logic
+
 ### Writing Tests
 
-Create test files with `.test.ts` extension:
+Create test files with `.test.ts` extension using the AAA pattern:
 
 ```ts
 import { describe, it, expect } from '@jest/globals';
 
-describe('MyFunction', () => {
-  it('should return expected result', () => {
-    const result = myFunction('input');
-    expect(result).toBe('expected output');
+describe('validateTaskInput', () => {
+  // Test Case: valid input
+  it('should accept a task with a title', () => {
+    // Arrange
+    const input = { title: 'Buy groceries' };
+
+    // Act
+    const result = validateTaskInput(input);
+
+    // Assert
+    expect(result.isValid).toBe(true);
   });
 
-  it('should handle async operations', async () => {
-    const result = await asyncFunction();
-    expect(result).toBeDefined();
+  // Test Case: invalid input
+  it('should reject a task without a title', () => {
+    // Arrange
+    const input = { title: '' };
+
+    // Act
+    const result = validateTaskInput(input);
+
+    // Assert
+    expect(result.isValid).toBe(false);
+    expect(result.error).toBe('Title is required');
   });
 });
-```
-
-### File Structure
-
-```
-tests/
-├── unit/           # Unit tests
-│   └── *.test.ts
-└── integration/    # Integration tests
-    └── *.test.ts
 ```
 
 ### Coverage
