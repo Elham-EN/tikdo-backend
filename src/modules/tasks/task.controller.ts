@@ -31,4 +31,14 @@ async function createTask(req: Request, res: Response) {
   }
 }
 
-export const TaskController = { createTask };
+async function getTasks(req: Request, res: Response) {
+  try {
+    const todoItems = await TaskService.getTasks();
+    res.status(200).send(todoItems);
+  } catch (error) {
+    console.error('Error getting all tasks', error);
+    res.status(500).json({ error: 'Failed to get tasks' });
+  }
+}
+
+export const TaskController = { createTask, getTasks };

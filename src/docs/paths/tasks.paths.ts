@@ -31,5 +31,24 @@ export const tasksPaths: OpenAPIV3.PathsObject = {
         '500': commonResponses[500],
       },
     },
+    get: {
+      summary: 'Get all tasks',
+      description: 'Returns all tasks that are not deleted, ordered by creation date (newest first)',
+      tags: ['Tasks'],
+      responses: {
+        '200': {
+          description: 'List of tasks',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'array',
+                items: taskSchema,
+              },
+            },
+          },
+        },
+        '500': commonResponses[500],
+      },
+    },
   },
 };

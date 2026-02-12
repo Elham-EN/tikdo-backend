@@ -15,4 +15,7 @@ const TaskRouter = express.Router();
 // Endpoint: Creating task
 TaskRouter.post('/', TaskController.createTask);
 
+// Endpoint: Getting all tasks
+TaskRouter.get('/', TaskController.getTasks);
+
 export default TaskRouter;
