@@ -33,4 +33,14 @@ async function createTask(createTaskInput: CreateTaskInput) {
   return task;
 }
 
-export const TaskService = { createTask };
+async function getTasks() {
+  return await prisma.task.findMany({
+    // Get all todoitems that are not deleted
+    where: {
+      status: { not: 'deleted' },
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+}
+
+export const TaskService = { createTask, getTasks };
