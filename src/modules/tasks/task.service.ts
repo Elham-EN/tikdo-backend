@@ -30,10 +30,6 @@ async function createTask(createTaskInput: CreateTaskInput) {
     },
   });
 
-  if (!task) {
-    throw new Error(`Task creation failed`);
-  }
-
   return task;
 }
 
