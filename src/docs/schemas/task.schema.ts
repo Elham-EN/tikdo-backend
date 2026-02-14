@@ -39,6 +39,27 @@ export const createTaskSchema: OpenAPIV3.SchemaObject = {
 };
 
 /**
+ * Move task request schema
+ */
+export const moveTaskSchema: OpenAPIV3.SchemaObject = {
+  type: 'object',
+  properties: {
+    listType: {
+      type: 'string',
+      enum: ['inbox', 'today', 'upcoming', 'anytime', 'someday'],
+      description: 'Target list to move the task to',
+      example: 'today',
+    },
+    status: {
+      type: 'string',
+      enum: ['pending', 'completed', 'deleted'],
+      description: 'New status for the task',
+      example: 'completed',
+    },
+  },
+};
+
+/**
  * Task response schema (full task object)
  */
 export const taskSchema: OpenAPIV3.SchemaObject = {

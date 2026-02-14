@@ -6,7 +6,7 @@
  */
 
 import { prisma } from '../../shared/utils/prisma';
-import type { CreateTaskInput } from './task.validation';
+import type { CreateTaskInput, MoveTaskInput } from './task.validation';
 
 async function createTask(createTaskInput: CreateTaskInput) {
   const task = await prisma.task.create({
@@ -43,4 +43,14 @@ async function getTasks() {
   });
 }
 
-export const TaskService = { createTask, getTasks };
+async function moveTask(id: number, input: MoveTaskInput) {
+  return await prisma.task.update({
+    where: { id },
+    data: {
+      ...(input.listType !== undefined && { listType: input.listType }),
+      ...(input.status !== undefined && { status: input.status }),
+    },
+  });
+}
+
+export const TaskService = { createTask, getTasks, moveTask };

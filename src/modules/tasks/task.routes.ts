@@ -18,4 +18,7 @@ TaskRouter.post('/', TaskController.createTask);
 // Endpoint: Getting all tasks
 TaskRouter.get('/', TaskController.getTasks);
 
+// Endpoint: Move task to a different list or trash
+TaskRouter.patch('/:id/move', TaskController.moveTask);
+
 export default TaskRouter;

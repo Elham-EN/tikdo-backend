@@ -8,7 +8,7 @@
 
 import type { Request, Response } from 'express';
 import { ZodError } from 'zod';
-import { createTaskSchema } from './task.validation';
+import { createTaskSchema, moveTaskSchema } from './task.validation';
 import { TaskService } from './task.service';
 
 async function createTask(req: Request, res: Response) {
@@ -41,4 +41,24 @@ async function getTasks(req: Request, res: Response) {
   }
 }
 
-export const TaskController = { createTask, getTasks };
+async function moveTask(req: Request, res: Response) {
+  try {
+    const id = Number(req.params.id);
+    if (Number.isNaN(id)) {
+      res.status(400).json({ error: 'Invalid task ID' });
+      return;
+    }
+    const input = moveTaskSchema.parse(req.body);
+    const result = await TaskService.moveTask(id, input);
+    res.status(200).json(result);
+  } catch (error) {
+    if (error instanceof ZodError) {
+      res.status(400).json({ error: error.issues });
+      return;
+    }
+    console.error('Error moving task:', error);
+    res.status(500).json({ error: 'Failed to move task' });
+  }
+}
+
+export const TaskController = { createTask, getTasks, moveTask };

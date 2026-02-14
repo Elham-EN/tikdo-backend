@@ -28,3 +28,14 @@ export const createTaskSchema = z.object({
 });
 
 export type CreateTaskInput = z.infer<typeof createTaskSchema>;
+
+// Matches the Prisma TaskStatus enum
+const taskStatusEnum = z.enum(['pending', 'completed', 'deleted']);
+
+// Validates: PATCH /api/v1/tasks/:id/move
+export const moveTaskSchema = z.object({
+  listType: listTypeEnum.optional(),
+  status: taskStatusEnum.optional(),
+});
+
+export type MoveTaskInput = z.infer<typeof moveTaskSchema>;
