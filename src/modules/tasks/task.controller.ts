@@ -8,7 +8,7 @@
 
 import type { Request, Response } from 'express';
 import { ZodError } from 'zod';
-import { createTaskSchema, moveTaskSchema } from './task.validation';
+import { createTaskSchema, moveTaskSchema, reorderTaskSchema } from './task.validation';
 import { TaskService } from './task.service';
 
 async function createTask(req: Request, res: Response) {
@@ -61,4 +61,24 @@ async function moveTask(req: Request, res: Response) {
   }
 }
 
-export const TaskController = { createTask, getTasks, moveTask };
+async function reorderTask(req: Request, res: Response) {
+  try {
+    const id = Number(req.params.id);
+    if (Number.isNaN(id)) {
+      res.status(400).json({ error: 'Invalid task ID' });
+      return;
+    }
+    const { newPosition } = reorderTaskSchema.parse(req.body);
+    const result = await TaskService.reorderTask(id, newPosition);
+    res.status(200).json(result);
+  } catch (error) {
+    if (error instanceof ZodError) {
+      res.status(400).json({ error: error.issues });
+      return;
+    }
+    console.error('Error reordering task:', error);
+    res.status(500).json({ error: 'Failed to reorder task' });
+  }
+}
+
+export const TaskController = { createTask, getTasks, moveTask, reorderTask };

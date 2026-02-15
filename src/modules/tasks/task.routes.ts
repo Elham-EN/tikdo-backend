@@ -21,4 +21,7 @@ TaskRouter.get('/', TaskController.getTasks);
 // Endpoint: Move task to a different list or trash
 TaskRouter.patch('/:id/move', TaskController.moveTask);
 
+// Endpoint: Reorder task within its list
+TaskRouter.patch('/:id/reorder', TaskController.reorderTask);
+
 export default TaskRouter;

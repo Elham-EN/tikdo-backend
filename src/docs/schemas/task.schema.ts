@@ -60,6 +60,22 @@ export const moveTaskSchema: OpenAPIV3.SchemaObject = {
 };
 
 /**
+ * Reorder task request schema
+ */
+export const reorderTaskSchema: OpenAPIV3.SchemaObject = {
+  type: 'object',
+  required: ['newPosition'],
+  properties: {
+    newPosition: {
+      type: 'integer',
+      minimum: 1,
+      description: 'The new position for the task within its list',
+      example: 3,
+    },
+  },
+};
+
+/**
  * Task response schema (full task object)
  */
 export const taskSchema: OpenAPIV3.SchemaObject = {

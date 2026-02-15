@@ -39,3 +39,10 @@ export const moveTaskSchema = z.object({
 });
 
 export type MoveTaskInput = z.infer<typeof moveTaskSchema>;
+
+// Validates: PATCH /api/v1/tasks/:id/reorder
+export const reorderTaskSchema = z.object({
+  newPosition: z.number().int().positive('Position must be a positive integer'),
+});
+
+export type ReorderTaskInput = z.infer<typeof reorderTaskSchema>;

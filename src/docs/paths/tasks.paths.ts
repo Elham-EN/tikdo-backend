@@ -1,5 +1,10 @@
 import type { OpenAPIV3 } from 'openapi-types';
-import { createTaskSchema, moveTaskSchema, taskSchema } from '../schemas/task.schema.js';
+import {
+  createTaskSchema,
+  moveTaskSchema,
+  reorderTaskSchema,
+  taskSchema,
+} from '../schemas/task.schema.js';
 import { commonResponses } from '../schemas/common.schema.js';
 
 /**
@@ -33,7 +38,8 @@ export const tasksPaths: OpenAPIV3.PathsObject = {
     },
     get: {
       summary: 'Get all tasks',
-      description: 'Returns all tasks that are not deleted, ordered by creation date (newest first)',
+      description:
+        'Returns all tasks that are not deleted, ordered by creation date (newest first)',
       tags: ['Tasks'],
       responses: {
         '200': {
@@ -79,6 +85,45 @@ export const tasksPaths: OpenAPIV3.PathsObject = {
       responses: {
         '200': {
           description: 'Task moved successfully',
+          content: {
+            'application/json': {
+              schema: taskSchema,
+            },
+          },
+        },
+        '400': commonResponses[400],
+        '500': commonResponses[500],
+      },
+    },
+  },
+  '/api/v1/tasks/{id}/reorder': {
+    patch: {
+      summary: 'Reorder a task',
+      description: 'Move a task to a new position within its list, shifting other tasks as needed',
+      tags: ['Tasks'],
+      parameters: [
+        {
+          name: 'id',
+          in: 'path',
+          required: true,
+          description: 'Task ID',
+          schema: {
+            type: 'integer',
+            example: 1,
+          },
+        },
+      ],
+      requestBody: {
+        required: true,
+        content: {
+          'application/json': {
+            schema: reorderTaskSchema,
+          },
+        },
+      },
+      responses: {
+        '200': {
+          description: 'Task reordered successfully',
           content: {
             'application/json': {
               schema: taskSchema,
