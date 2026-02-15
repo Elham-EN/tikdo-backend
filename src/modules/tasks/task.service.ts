@@ -50,11 +50,8 @@ async function createTask(createTaskInput: CreateTaskInput) {
 }
 
 async function getTasks() {
+  // Get all tasks including deleted ones (frontend handles filtering)
   return await prisma.task.findMany({
-    // Get all todoitems that are not deleted
-    where: {
-      status: { not: 'deleted' },
-    },
     orderBy: [{ listType: 'asc' }, { position: 'asc' }],
   });
 }
@@ -122,4 +119,22 @@ async function reorderTask(id: number, newPosition: number) {
   });
 }
 
-export const TaskService = { createTask, getTasks, moveTask, reorderTask };
+/**
+ * Permanently deletes a task from the database.
+ * This is a hard delete - the task record is completely removed and cannot be recovered.
+ * Should only be called for tasks that are already in the trash (status="deleted").
+ */
+async function deleteTask(id: number) {
+  // First check if task exists
+  const task = await prisma.task.findUnique({ where: { id } });
+  if (!task) {
+    throw new Error(`Task with id ${id} not found`);
+  }
+
+  // Permanently delete the task from the database
+  return await prisma.task.delete({
+    where: { id },
+  });
+}
+
+export const TaskService = { createTask, getTasks, moveTask, reorderTask, deleteTask };

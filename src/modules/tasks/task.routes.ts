@@ -24,4 +24,7 @@ TaskRouter.patch('/:id/move', TaskController.moveTask);
 // Endpoint: Reorder task within its list
 TaskRouter.patch('/:id/reorder', TaskController.reorderTask);
 
+// Endpoint: Permanently delete a task from the database
+TaskRouter.delete('/:id', TaskController.deleteTask);
+
 export default TaskRouter;

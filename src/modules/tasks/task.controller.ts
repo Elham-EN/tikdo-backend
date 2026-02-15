@@ -81,4 +81,23 @@ async function reorderTask(req: Request, res: Response) {
   }
 }
 
-export const TaskController = { createTask, getTasks, moveTask, reorderTask };
+async function deleteTask(req: Request, res: Response) {
+  try {
+    // Extract and validate task ID from URL params
+    const id = Number(req.params.id);
+    if (Number.isNaN(id)) {
+      res.status(400).json({ error: 'Invalid task ID' });
+      return;
+    }
+    // Permanently delete the task from database
+    const result = await TaskService.deleteTask(id);
+    // Return success with deleted task data
+    res.status(200).json(result);
+  } catch (error) {
+    // Handle task not found or database errors
+    console.error('Error deleting task:', error);
+    res.status(500).json({ error: 'Failed to delete task' });
+  }
+}
+
+export const TaskController = { createTask, getTasks, moveTask, reorderTask, deleteTask };
